@@ -25,3 +25,5 @@ if exist bin\x64\Release\ (
 	ROBOCOPY ThirdParty\SDL2\lib\x64\   bin\x64\Release SDL2.dll 
 	ROBOCOPY ThirdParty\SDL2_image\lib\x64\ bin\x64\Release SDL2_image.dll
 ) 
+
+exit 0
