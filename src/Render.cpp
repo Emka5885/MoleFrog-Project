@@ -7,8 +7,9 @@
 
 SDL_Window* GetWindow()
 {
+	// Window has to be stored somewhere becouse we have to destroy it at the end
 	static SDL_Window* window;
-	
+
 	if (!window)
 	{
 		window = SDL_CreateWindow("MoleFrog", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
@@ -31,6 +32,17 @@ SDL_Renderer* GetRenderer()
 	return renderer;
 }
 
+void RenderInit()
+{
+	GetWindow();
+	GetRenderer();
+}
+
+void RenderTerminate()
+{
+	SDL_DestroyWindow(GetWindow());
+}
+
 void Render()
 {
 	SDL_SetRenderDrawColor(GetRenderer(), 0, 0, 0, 255);
@@ -42,7 +54,6 @@ void DrawRect(SDL_Rect& size, SDL_Color&& color)
 	SDL_SetRenderDrawColor(GetRenderer(), color.r, color.g, color.b, color.a);
 	SDL_RenderFillRect(GetRenderer(), &size);
 }
-
 
 void DrawFrog()
 {

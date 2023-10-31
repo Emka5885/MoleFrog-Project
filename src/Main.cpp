@@ -13,6 +13,8 @@ int main(int argc, char* args[])
 	int result = SDL_Init(SDL_INIT_VIDEO);
 	assert(result == 0 && "SDL could not initialize!");
 
+	RenderInit();
+
 	bool quit = false;
 	SDL_Event event;
 	
@@ -38,8 +40,7 @@ int main(int argc, char* args[])
 		}
 	}
 
-	
-	SDL_DestroyWindow(GetWindow());
+	RenderTerminate();
 	SDL_Quit();
 	return 0;
 }
