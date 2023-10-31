@@ -8,7 +8,7 @@ int main(int argc, char* args[])
 {
 	float dt = (float)(SDL_GetTicks() / 1000.f);
 	float lastTime = 0.f;
-	const float DESIRED_DT = 1 / 60.f; // 60 FPS
+	const float DESIRED_DT = 1 / 60.f; // 60 FPS 
 
 	int result = SDL_Init(SDL_INIT_VIDEO);
 	assert(result == 0 && "SDL could not initialize!");

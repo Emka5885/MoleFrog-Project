@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Render.cpp" />
   </ItemGroup>
   <ItemGroup>
