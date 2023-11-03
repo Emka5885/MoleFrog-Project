@@ -19,10 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\AssetManager.cpp" />
+    <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Render.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\AssetManager.h" />
+    <ClInclude Include="src\Definitions.h" />
+    <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\Render.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

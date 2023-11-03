@@ -1,7 +1,8 @@
 #pragma once
 
-const int SCREEN_WIDTH = 1080;
-const int SCREEN_HEIGHT = 720;
+#include <SDL.h>
+#include <SDL_image.h>
+#include <cassert>
 
 //struct SDL_Window* GetWindow();
 //struct SDL_Renderer* GetRenderer();
@@ -9,8 +10,8 @@ const int SCREEN_HEIGHT = 720;
 void RenderInit(); 
 void RenderTerminate();
 
-void Render();
+void RenderBackground();
 
-void DrawRect(struct SDL_Rect& size, struct SDL_Color&& color);
-void DrawMole();
-void DrawFrog();
+SDL_Renderer* GetRender();
+
+void Draw();

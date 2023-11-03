@@ -1,9 +1,5 @@
 #include "Render.h"
-
-#include <SDL.h>
-#include <SDL_image.h>
-#include <cassert>
-
+#include "Definitions.h"
 
 SDL_Window* GetWindow()
 {
@@ -12,7 +8,7 @@ SDL_Window* GetWindow()
 
 	if (!window)
 	{
-		window = SDL_CreateWindow("MoleFrog", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+		window = SDL_CreateWindow("MoleFrog", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 		assert(window != nullptr && "Window could not be created!");
 	}
 
@@ -41,34 +37,25 @@ void RenderInit()
 void RenderTerminate()
 {
 	SDL_DestroyWindow(GetWindow());
+	SDL_DestroyRenderer(GetRenderer());
 }
 
-void Render()
+void RenderBackground()
 {
-	SDL_SetRenderDrawColor(GetRenderer(), 0, 0, 0, 255);
-	SDL_RenderPresent(GetRenderer());
+	SDL_SetRenderDrawColor(GetRenderer(), 126, 192, 238, 255);
+	SDL_Rect rect;
+	rect.x = rect.y = 0;
+	rect.w = WIDTH;
+	rect.h = HEIGHT;
+	SDL_RenderFillRect(GetRenderer(), &rect);
 }
 
-void DrawRect(SDL_Rect& size, SDL_Color&& color)
+SDL_Renderer* GetRender()
 {
-	SDL_SetRenderDrawColor(GetRenderer(), color.r, color.g, color.b, color.a);
-	SDL_RenderFillRect(GetRenderer(), &size);
+	return GetRenderer();
 }
 
-void DrawFrog()
+void Draw()
 {
-	SDL_Rect frogHead = { SCREEN_WIDTH / 2 + 150, SCREEN_HEIGHT / 2 - 50, 100, 50 };
-	DrawRect(frogHead, { 100, 255, 50, 255 });
-
-	SDL_Rect frog = { SCREEN_WIDTH / 2 + 100, SCREEN_HEIGHT / 2, 200, 100 };
-	DrawRect(frog, { 100, 255, 50, 255 });
-}
-
-void DrawMole()
-{
-	SDL_Rect moleHead = { SCREEN_WIDTH / 2 - 250, SCREEN_HEIGHT / 2 - 50, 100, 50 };	
-	DrawRect(moleHead, { 100, 100, 100, 255 });
-
-	SDL_Rect mole = { SCREEN_WIDTH / 2 - 300, SCREEN_HEIGHT / 2, 200, 100 };
-	DrawRect(mole, { 100, 100, 100, 255 });
+	
 }
