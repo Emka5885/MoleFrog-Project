@@ -5,7 +5,7 @@ Object::~Object()
 	SDL_DestroyTexture(tex);
 }
 
-void Object::SetSource(int w, int h, int x, int y)
+void Object::SetSource(int x, int y, int w, int h)
 {
 	src.x = x;
 	src.y = y;

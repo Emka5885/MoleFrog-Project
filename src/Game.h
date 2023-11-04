@@ -6,6 +6,7 @@
 #include "Render.h"
 #include "AssetManager.h"
 #include "Tileset.h"
+#include "Player.h"
 
 class Game
 {
@@ -21,10 +22,18 @@ public:
 
 	void Draw();
 
+	void PlayerFall();
+
+	bool Collision(SDL_Rect& a, SDL_Rect& b);
+	bool CollisionWithGround(SDL_Rect& p, SDL_Rect& g);
+
 private:
 	AssetManager* assets;
 
+	Player* player;
+
 	std::vector<Tileset*> map;
+	std::vector<Tileset*> mounds;
 
 	bool quitt = false;
 };

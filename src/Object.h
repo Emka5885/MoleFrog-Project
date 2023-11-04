@@ -10,7 +10,7 @@ private:
 
 public:
 	~Object();
-	void SetSource(int w, int h, int x = 0, int y = 0);
+	void SetSource(int x, int y, int w, int h);
 	void SetDest(int x, int y, int w, int h);
 	void SetDestPosition(int x, int y);
 	void SetTexture(SDL_Texture* tex);

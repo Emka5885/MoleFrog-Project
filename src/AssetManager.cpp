@@ -1,5 +1,6 @@
 #include "AssetManager.h"
 #include "Render.h"
+#include "Definitions.h"
 
 AssetManager::AssetManager()
 {
@@ -8,8 +9,8 @@ AssetManager::AssetManager()
 
 void AssetManager::InitTextures()
 {
-	LoadTexture("moleL", "res/moleL.png");
 	LoadTexture("tilesets", "res/moleFrogTilesets.png");
+	LoadTexture(MOLE_IMAGE, MOLE_IMAGE_PATH);
 }
 
 void AssetManager::LoadTexture(const char* name, const char* fileName)
