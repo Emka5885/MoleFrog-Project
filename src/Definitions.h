@@ -12,8 +12,7 @@ constexpr const int GRAVITY = 15;
 constexpr const int MAX_HEALTH = 3;
 constexpr const int PLAYER_SPEED = 4;
 
-constexpr const int GHOST_SPEED = 5;
-constexpr const int SWEET_SPEED = 6;
+constexpr const int ENTITY_SPEED = 5;
 
 constexpr const int ENTITY_SIZE = 80;
 

@@ -1,4 +1,5 @@
 #include "Entity.h"
+#include "Definitions.h"
 
 Entity::Entity()
 {
@@ -32,5 +33,17 @@ void Entity::Init()
 	case 3:
 		SetDest(initialX, 560, ENTITY_SIZE, ENTITY_SIZE);
 		break;
+	}
+}
+
+void Entity::Update()
+{
+	if (initialX < 0)
+	{
+		Move(ENTITY_SPEED, 0, GetDest());
+	}
+	else
+	{
+		Move(-ENTITY_SPEED, 0, GetDest());
 	}
 }

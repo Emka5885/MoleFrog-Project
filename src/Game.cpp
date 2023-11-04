@@ -33,6 +33,8 @@ void Game::Init()
 	//Render Init
 	RenderInit();
 
+	SDL_ShowCursor(false);
+
 	assets = new AssetManager();
 	widgets = new Widgets();
 	player = new Player();
