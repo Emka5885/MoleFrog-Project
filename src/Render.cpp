@@ -42,6 +42,7 @@ void RenderTerminate()
 
 void RenderBackground()
 {
+	SDL_RenderClear(GetRender());
 	SDL_SetRenderDrawColor(GetRenderer(), 126, 192, 238, 255);
 	SDL_Rect rect;
 	rect.x = rect.y = 0;

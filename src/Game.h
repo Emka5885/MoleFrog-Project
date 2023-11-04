@@ -1,8 +1,11 @@
 #pragma once
-#include <SDL.h>
 #include <assert.h>
+#include <vector>
+#include <fstream>
+#include <SDL.h>
 #include "Render.h"
 #include "AssetManager.h"
+#include "Tileset.h"
 
 class Game
 {
@@ -14,10 +17,14 @@ public:
 	void Input();
 	void Update();
 
+	void LoadMap(const char* fileName);
+
+	void Draw();
+
 private:
 	AssetManager* assets;
 
-	SDL_Rect test, test1;
+	std::vector<Tileset*> map;
 
 	bool quitt = false;
 };

@@ -1,4 +1,6 @@
 #include "Game.h"
+#include "Definitions.h"
+#include <iostream>
 
 Game::Game()
 {
@@ -17,17 +19,12 @@ void Game::Init()
 {
 	int result = SDL_Init(SDL_INIT_VIDEO);
 	assert(result == 0 && "SDL could not initialize!");
+	int imgFlags = IMG_INIT_PNG;
+	int imgInitResult = IMG_Init(imgFlags);
+	assert((imgInitResult & imgFlags) == imgFlags && "SDL_Image could not initialize!");
 	RenderInit();
 	assets->InitTextures();
-
-	test.x = 100;
-	test.y = 100;
-	test.w = 84;
-	test.h = 116;
-	test1.x = 0;
-	test1.y = 0;
-	test1.w = 420;
-	test1.h = 579;
+	LoadMap("res/MoleFrog.tilesets");
 
 	Loop();
 }
@@ -46,11 +43,8 @@ void Game::Loop()
 		{
 			Input();
 			Update();
-			RenderBackground();
-
-			SDL_RenderCopyEx(GetRender(), assets->GetTexture("moleL"), &test1, &test, 0, NULL, SDL_FLIP_NONE);
-
-			SDL_RenderPresent(GetRender());
+			
+			Draw();
 
 			lastTime = (float)SDL_GetTicks();
 		}
@@ -71,4 +65,63 @@ void Game::Input()
 
 void Game::Update()
 {
+}
+
+void Game::LoadMap(const char* fileName)
+{
+	int currentTile, x, y, w, h;
+	std::fstream file(fileName);
+
+	if (!file.is_open())
+	{
+		assert(!file.is_open() && "File with tilesets could not be opened!");
+		return;
+	}
+
+	file >> w;
+	file >> h;
+	file >> x;
+	file >> y;
+	for (int i = 0; i < h; i++)
+	{
+		for (int j = 0; j < w; j++)
+		{
+			if (file.eof())
+			{
+				assert(file.eof() && "Reached end of map file too soon!");
+				return;
+			}
+			file >> currentTile;
+			if (currentTile != 0)
+			{
+				Tileset* tmp = new Tileset;
+				tmp->SetTexture(assets->GetTexture("tilesets"));
+				tmp->SetSource(32, 32, (currentTile - 1) * 32, 0);
+				tmp->SetDest((j * TILE_SIZE) + x, (i * TILE_SIZE) + y, TILE_SIZE, TILE_SIZE);
+				tmp->SetID(currentTile);
+				if (currentTile == 4)
+				{
+					tmp->SetSolid(0);
+				}
+				else
+				{
+					tmp->SetSolid(1);
+				}
+				map.emplace_back(tmp);
+			}
+		}
+	}
+	file.close();
+}
+
+void Game::Draw()
+{
+	RenderBackground();
+
+	for (int i = 0; i < map.size(); i++)
+	{
+		SDL_RenderCopyEx(GetRender(), map[i]->GetTexture(), &map[i]->GetSource(), &map[i]->GetDest(), 0, NULL, SDL_FLIP_NONE);
+	}
+
+	SDL_RenderPresent(GetRender());
 }

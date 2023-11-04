@@ -22,13 +22,17 @@
     <ClCompile Include="src\AssetManager.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Object.cpp" />
     <ClCompile Include="src\Render.cpp" />
+    <ClCompile Include="src\Tileset.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AssetManager.h" />
     <ClInclude Include="src\Definitions.h" />
     <ClInclude Include="src\Game.h" />
+    <ClInclude Include="src\Object.h" />
     <ClInclude Include="src\Render.h" />
+    <ClInclude Include="src\Tileset.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

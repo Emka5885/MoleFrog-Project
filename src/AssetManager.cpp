@@ -9,6 +9,7 @@ AssetManager::AssetManager()
 void AssetManager::InitTextures()
 {
 	LoadTexture("moleL", "res/moleL.png");
+	LoadTexture("tilesets", "res/moleFrogTilesets.png");
 }
 
 void AssetManager::LoadTexture(const char* name, const char* fileName)
