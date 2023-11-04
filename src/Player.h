@@ -10,7 +10,7 @@ class Player : public Object, public Interface
 private:
 	int health, maxHealth;
 	bool move, fall, moveToMound, jump;
-	int jumpCounter, jumpVelocity;
+	int jumpCounter, jumpVelocity, fallVelocity;
 	direction dir;
 
 public:

@@ -1,16 +1,24 @@
 #include "AssetManager.h"
 #include "Render.h"
 #include "Definitions.h"
+#include <iostream>
 
 AssetManager::AssetManager()
 {
 	InitTextures();
+	InitFonts();
 }
 
 void AssetManager::InitTextures()
 {
-	LoadTexture("tilesets", "res/moleFrogTilesets.png");
+	LoadTexture(TILESETS_IMAGE, TILESETS_IMAGE_PATH);
+	LoadTexture(HEART_IMAGE, HEART_IMAGE_PATH);
 	LoadTexture(MOLE_IMAGE, MOLE_IMAGE_PATH);
+}
+
+void AssetManager::InitFonts()
+{
+	LoadFont(FONT, FONT_PATH, 40);
 }
 
 void AssetManager::LoadTexture(const char* name, const char* fileName)
@@ -32,4 +40,21 @@ void AssetManager::LoadTexture(const char* name, const char* fileName)
 SDL_Texture* AssetManager::GetTexture(const char* name)
 {
 	return this->textures.at(name);
+}
+
+void AssetManager::LoadFont(const char* name, const char* fileName, int fontSize)
+{
+	TTF_Font* font = TTF_OpenFont(fileName, fontSize);
+
+	assert(font != nullptr && "Font could not be created!");
+	
+	if (font != nullptr)
+	{
+		fonts[name] = font;
+	}
+}
+
+TTF_Font* AssetManager::GetFont(const char* name)
+{
+	return this->fonts.at(name);
 }

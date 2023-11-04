@@ -6,7 +6,7 @@ Player::Player()
 	move = moveToMound = fall = jump = false;
 	maxHealth = MAX_HEALTH;
 	health = maxHealth;
-	jumpCounter = 0;
+	jumpCounter = fallVelocity = 0;
 	jumpVelocity = 30;
 }
 
@@ -83,6 +83,15 @@ void Player::Update()
 	}
 	else if (fall)
 	{
-		Move(0, GRAVITY, GetDest());
+		fallVelocity += 2;
+		if(fallVelocity > GRAVITY)
+			Move(0, GRAVITY, GetDest());
+		else
+			Move(0, fallVelocity, GetDest());
+	}
+
+	if (!fall)
+	{
+		fallVelocity = 0;
 	}
 }

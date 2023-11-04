@@ -7,6 +7,7 @@
 #include "AssetManager.h"
 #include "Tileset.h"
 #include "Player.h"
+#include "Widgets.h"
 
 class Game
 {
@@ -24,16 +25,18 @@ public:
 
 	void PlayerFall();
 
-	bool Collision(SDL_Rect& a, SDL_Rect& b);
-	bool CollisionWithGround(SDL_Rect& p, SDL_Rect& g);
+	bool Collision(Object& a, Object& b);
+	bool CollisionWithGround(Player& p, Tileset& g);
 
 private:
 	AssetManager* assets;
 
+	Widgets* widgets;
 	Player* player;
 
 	std::vector<Tileset*> map;
 	std::vector<Tileset*> mounds;
 
 	bool quitt = false;
+	bool gameOver = false;
 };

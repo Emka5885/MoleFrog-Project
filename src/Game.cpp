@@ -4,31 +4,47 @@
 
 Game::Game()
 {
-	assets = new AssetManager();
-	player = new Player();
+	assets = nullptr;
+	widgets = nullptr;
+	player = nullptr;
 	Init();
 }
 
 Game::~Game()
 {
 	RenderTerminate();
+	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
 }
 
 void Game::Init()
 {
+	//SDL Init
 	int result = SDL_Init(SDL_INIT_VIDEO);
 	assert(result == 0 && "SDL could not initialize!");
+	//TTF Init
+	result = TTF_Init();
+	assert(result == 0 && "Font could not initialize!");
+	//SDL_Image Init
 	int imgFlags = IMG_INIT_PNG;
 	int imgInitResult = IMG_Init(imgFlags);
 	assert((imgInitResult & imgFlags) == imgFlags && "SDL_Image could not initialize!");
+	//Render Init
 	RenderInit();
+
+	assets = new AssetManager();
+	widgets = new Widgets();
+	player = new Player();
+
 	assets->InitTextures();
 	LoadMap("res/MoleFrog.tilesets");
+
 	player->SetDest(WIDTH / 2, HEIGHT - TILE_SIZE - 102, 63, 87);
 	player->SetNewDirection(left);
 	player->SetTexture(assets->GetTexture(MOLE_IMAGE));
+	widgets->SetTexture(assets->GetTexture(HEART_IMAGE));
+	widgets->SetFont(assets->GetFont(FONT));
 
 	Loop();
 }
@@ -89,6 +105,14 @@ void Game::Input()
 				if(!player->GetJump() && !player->GetFall())
 					player->SetJump(true);
 			}
+			if (event.key.keysym.sym == SDLK_e)
+			{
+				widgets->EraseHeart();
+			}
+			if (event.key.keysym.sym == SDLK_p)
+			{
+				widgets->AddPoint();
+			}
 		}
 		if (event.type == SDL_KEYUP)
 		{
@@ -108,6 +132,15 @@ void Game::Update()
 {
 	PlayerFall();
 	player->Update();
+
+	if (widgets->GetNumberOfFullHearts() <= 0)
+	{
+		gameOver = true;
+	}
+	if (gameOver)
+	{
+		std::cout << "Game Over!\n";
+	}
 }
 
 void Game::LoadMap(const char* fileName)
@@ -138,7 +171,7 @@ void Game::LoadMap(const char* fileName)
 			if (currentTile != 0)
 			{
 				Tileset* tmp = new Tileset;
-				tmp->SetTexture(assets->GetTexture("tilesets"));
+				tmp->SetTexture(assets->GetTexture(TILESETS_IMAGE));
 				tmp->SetSource((currentTile - 1) * 32, 0, 32, 32);
 				tmp->SetDest((j * TILE_SIZE) + x, (i * TILE_SIZE) + y, TILE_SIZE, TILE_SIZE);
 				tmp->SetID(currentTile);
@@ -167,6 +200,8 @@ void Game::Draw()
 		SDL_RenderCopyEx(GetRender(), map[i]->GetTexture(), &map[i]->GetSource(), &map[i]->GetDest(), 0, NULL, SDL_FLIP_NONE);
 	}
 
+	widgets->Draw(GetRender());
+
 	SDL_RenderCopyEx(GetRender(), player->GetTexture(), &player->GetSource(), &player->GetDest(), 0, NULL, SDL_FLIP_NONE);
 
 	SDL_RenderPresent(GetRender());
@@ -177,7 +212,7 @@ void Game::PlayerFall()
 	player->SetFall(true);
 	for (int i = 0; i < map.size(); i++)
 	{
-		if (CollisionWithGround(player->GetDest(), map[i]->GetDest()))
+		if (CollisionWithGround(*player, *map[i]))
 		{
 			if (map[i]->GetSolid())
 			{
@@ -187,7 +222,7 @@ void Game::PlayerFall()
 	}
 	for (int i = 0; i < mounds.size(); i++)
 	{
-		if (Collision(player->GetDest(), mounds[i]->GetDest()))
+		if (Collision(*player, *mounds[i]))
 		{
 			if (player->GetMoveToMound())
 			{
@@ -207,18 +242,18 @@ void Game::PlayerFall()
 	}
 }
 
-bool Game::Collision(SDL_Rect& a, SDL_Rect& b)
+bool Game::Collision(Object& a, Object& b)
 {
-	if ((a.x < (b.x + b.w)) && ((a.x + a.w) > b.x) && (a.y < (b.y + b.h)) && ((a.y + a.h) > b.y))
+	if ((a.GetDest().x < (b.GetDest().x + b.GetDest().w)) && ((a.GetDest().x + a.GetDest().w) > b.GetDest().x) && (a.GetDest().y < (b.GetDest().y + b.GetDest().h)) && ((a.GetDest().y + a.GetDest().h) > b.GetDest().y))
 	{
 		return true;
 	}
 	return false;
 }
 
-bool Game::CollisionWithGround(SDL_Rect& p, SDL_Rect& g)
+bool Game::CollisionWithGround(Player& p, Tileset& g)
 {
-	if ((p.x + p.w/4 < (g.x + g.w)) && ((p.x + p.w - p.w/4) > g.x) && p.y + p.h > g.y && p.y + p.h < g.y + 12)
+	if ((p.GetDest().x + p.GetDest().w/4 < (g.GetDest().x + g.GetDest().w)) && ((p.GetDest().x + p.GetDest().w - p.GetDest().w/4) > g.GetDest().x) && p.GetDest().y + p.GetDest().h > g.GetDest().y && p.GetDest().y + p.GetDest().h < g.GetDest().y + 18)
 	{
 		return true;
 	}
