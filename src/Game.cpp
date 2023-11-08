@@ -1,6 +1,13 @@
 #include "Game.h"
+#include <assert.h>
+#include <fstream>
+#include <SDL.h>
+#include "Render.h"
 #include "Definitions.h"
 #include <iostream>
+
+int score = 0;
+int numberOfHearts = MAX_HEALTH;
 
 Game::Game()
 {
@@ -38,6 +45,7 @@ void Game::Init()
 	assets = new AssetManager();
 	widgets = new Widgets();
 	player = new Player();
+	spawner = new EntitySpawner();
 
 	assets->InitTextures();
 	LoadMap("res/MoleFrog.tilesets");
@@ -47,6 +55,8 @@ void Game::Init()
 	player->SetTexture(assets->GetTexture(MOLE_IMAGE));
 	widgets->SetTexture(assets->GetTexture(HEART_IMAGE));
 	widgets->SetFont(assets->GetFont(FONT));
+	widgets->SetOutlineFont(assets->GetFont(OUTLINE_FONT));
+	widgets->SetShadowFont(assets->GetFont(SHADOW_FONT));
 
 	Loop();
 }
@@ -64,7 +74,7 @@ void Game::Loop()
 		if (dt >= DESIRED_DT)
 		{
 			Input();
-			Update();
+			Update(dt);
 			
 			Draw();
 
@@ -88,32 +98,31 @@ void Game::Input()
 			{
 				quitt = true;
 			}
-			if (event.key.keysym.sym == SDLK_a)
+			if (!gameOver)
 			{
-				player->SetNewDirection(left);
-				player->SetMove(true);
-			}
-			if (event.key.keysym.sym == SDLK_d)
-			{
-				player->SetNewDirection(right);
-				player->SetMove(true);
-			}
-			if (event.key.keysym.sym == SDLK_s)
-			{
-				player->SetMoveToMound(true);
-			}
-			if (event.key.keysym.sym == SDLK_w)
-			{
-				if(!player->GetJump() && !player->GetFall())
-					player->SetJump(true);
-			}
-			if (event.key.keysym.sym == SDLK_e)
-			{
-				widgets->EraseHeart();
-			}
-			if (event.key.keysym.sym == SDLK_p)
-			{
-				widgets->AddPoint();
+				if (event.key.keysym.sym == SDLK_a)
+				{
+					player->SetNewDirection(left);
+					player->SetMove(true);
+				}
+				if (event.key.keysym.sym == SDLK_d)
+				{
+					player->SetNewDirection(right);
+					player->SetMove(true);
+				}
+				if (event.key.keysym.sym == SDLK_s)
+				{
+					player->SetMoveToMound(true);
+				}
+				if (event.key.keysym.sym == SDLK_w)
+				{
+					if (!player->GetJump() && !player->GetFall())
+						player->SetJump(true);
+				}
+				if (event.key.keysym.sym == SDLK_e)
+				{
+					widgets->EraseHeart();
+				}
 			}
 		}
 		if (event.type == SDL_KEYUP)
@@ -130,18 +139,53 @@ void Game::Input()
 	}
 }
 
-void Game::Update()
+void Game::Update(float dt)
 {
-	PlayerFall();
-	player->Update();
+	if (!gameOver)
+	{
+		PlayerFall();
+		player->Update();
 
-	if (widgets->GetNumberOfFullHearts() <= 0)
-	{
-		gameOver = true;
-	}
-	if (gameOver)
-	{
-		std::cout << "Game Over!\n";
+		for (int i = 0; i < entity.size(); i++)
+		{
+			entity[i]->Update();
+
+			if (entity[i]->WhetherToDestroy())
+			{
+				entity.erase(entity.begin() + i);
+			}
+
+			if (Collision(*player, *entity[i]))
+			{
+				entity[i]->Collision();
+				entity.erase(entity.begin() + i);
+			}
+		}
+
+		if (spawnTimer <= 0)
+		{
+			entity.emplace_back(spawner->Spawn(assets));
+
+			spawnTimer = SPAWN_RATE;
+		}
+		else
+		{
+			spawnTimer -= dt;
+		}
+
+		if (widgets->GetNumberOfFullHearts() != numberOfHearts)
+		{
+			widgets->EraseHeart();
+		}
+
+		if (widgets->GetNumberOfFullHearts() <= 0)
+		{
+			gameOver = true;
+		}
+		if (gameOver)
+		{
+			std::cout << "Game Over!\n";
+		}
 	}
 }
 
@@ -200,6 +244,18 @@ void Game::Draw()
 	for (int i = 0; i < map.size(); i++)
 	{
 		SDL_RenderCopyEx(GetRender(), map[i]->GetTexture(), &map[i]->GetSource(), &map[i]->GetDest(), 0, NULL, SDL_FLIP_NONE);
+	}
+
+	for (int i = 0; i < entity.size(); i++)
+	{
+		if (entity[i]->GetInitialX() < 0)
+		{
+			SDL_RenderCopyEx(GetRender(), entity[i]->GetTexture(), &entity[i]->GetSource(), &entity[i]->GetDest(), 0, NULL, SDL_FLIP_NONE);
+		}
+		else
+		{
+			SDL_RenderCopyEx(GetRender(), entity[i]->GetTexture(), &entity[i]->GetSource(), &entity[i]->GetDest(), 0, NULL, SDL_FLIP_HORIZONTAL);
+		}
 	}
 
 	widgets->Draw(GetRender());

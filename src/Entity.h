@@ -13,4 +13,9 @@ public:
 
 	void Init();
 	void Update();
+
+	int GetInitialX() const { return initialX; }
+	bool WhetherToDestroy();
+
+	virtual void Collision() = 0;
 };

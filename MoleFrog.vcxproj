@@ -20,23 +20,33 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AssetManager.cpp" />
+    <ClCompile Include="src\Candy.cpp" />
+    <ClCompile Include="src\Entity.cpp" />
+    <ClCompile Include="src\EntitySpawner.cpp" />
+    <ClCompile Include="src\Ghost.cpp" />
     <ClCompile Include="src\Interface.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Object.cpp" />
     <ClCompile Include="src\Render.cpp" />
+    <ClCompile Include="src\Text.cpp" />
     <ClCompile Include="src\Tileset.cpp" />
     <ClCompile Include="src\Widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AssetManager.h" />
+    <ClInclude Include="src\Candy.h" />
     <ClInclude Include="src\Definitions.h" />
+    <ClInclude Include="src\Entity.h" />
+    <ClInclude Include="src\EntitySpawner.h" />
+    <ClInclude Include="src\Ghost.h" />
     <ClInclude Include="src\Interface.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\Object.h" />
     <ClInclude Include="src\Render.h" />
+    <ClInclude Include="src\Text.h" />
     <ClInclude Include="src\Tileset.h" />
     <ClInclude Include="src\Widgets.h" />
   </ItemGroup>

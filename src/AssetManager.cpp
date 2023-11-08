@@ -14,11 +14,15 @@ void AssetManager::InitTextures()
 	LoadTexture(TILESETS_IMAGE, TILESETS_IMAGE_PATH);
 	LoadTexture(HEART_IMAGE, HEART_IMAGE_PATH);
 	LoadTexture(MOLE_IMAGE, MOLE_IMAGE_PATH);
+	LoadTexture(CANDY_IMAGE, CANDY_IMAGE_PATH);
+	LoadTexture(GHOST_IMAGE, GHOST_IMAGE_PATH);
 }
 
 void AssetManager::InitFonts()
 {
 	LoadFont(FONT, FONT_PATH, 40);
+	LoadFont(OUTLINE_FONT, FONT_PATH, 43);
+	LoadFont(SHADOW_FONT, FONT_PATH, 44);
 }
 
 void AssetManager::LoadTexture(const char* name, const char* fileName)

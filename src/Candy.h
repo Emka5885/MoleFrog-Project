@@ -1,9 +1,9 @@
 #pragma once
 #include "Entity.h"
 
-class Ghost : public Entity
+class Candy : public Entity
 {
 public:
-	Ghost(SDL_Texture* tex);
+	Candy(SDL_Texture* tex);
 	void Collision() override;
 };

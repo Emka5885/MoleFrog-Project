@@ -11,27 +11,20 @@ void Entity::Init()
 	int x = rand() % 2;
 	int y = rand() % 4;
 
-	if (x == 0)
-	{
-		initialX = -100;
-	}
-	else
-	{
-		initialX = WIDTH;
-	}
+	initialX = x ? -100 : WIDTH;
 	switch (y)
 	{
 	case 0:
-		SetDest(initialX, 20, ENTITY_SIZE, ENTITY_SIZE);
+		SetDestPosition(initialX, 20);
 		break;
 	case 1:
-		SetDest(initialX, 200, ENTITY_SIZE, ENTITY_SIZE);
+		SetDestPosition(initialX, 200);
 		break;
 	case 2:
-		SetDest(initialX, 380, ENTITY_SIZE, ENTITY_SIZE);
+		SetDestPosition(initialX, 380);
 		break;
 	case 3:
-		SetDest(initialX, 560, ENTITY_SIZE, ENTITY_SIZE);
+		SetDestPosition(initialX, 560);
 		break;
 	}
 }
@@ -46,4 +39,23 @@ void Entity::Update()
 	{
 		Move(-ENTITY_SPEED, 0, GetDest());
 	}
+}
+
+bool Entity::WhetherToDestroy()
+{
+	if (initialX < 0)
+	{
+		if (GetDest().x > WIDTH)
+		{
+			return true;
+		}
+	}
+	else
+	{
+		if (GetDest().x < 0 - GetDest().w)
+		{
+			return true;
+		}
+	}
+	return false;
 }

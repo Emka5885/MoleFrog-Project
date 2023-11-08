@@ -15,6 +15,8 @@ Widgets::~Widgets()
 
 void Widgets::Init()
 {
+	text = new Text();
+
 	srcFullHeart.x = 0;
 	srcFullHeart.y = 0;
 	srcFullHeart.w = 674;
@@ -46,22 +48,31 @@ void Widgets::Init()
 	fontColor.g = 255;
 	fontColor.b = 255;
 	fontColor.a = 255;
+	fontOutlineColor.r = 0;
+	fontOutlineColor.g = 0;
+	fontOutlineColor.b = 0;
+	fontOutlineColor.a = 255;
 	scoreText = "Score: ";
 }
 
-void Widgets::SetFont(TTF_Font* newfont)
+void Widgets::SetFont(TTF_Font* newFont)
 {
-	font = newfont;
+	font = newFont;
+}
+
+void Widgets::SetOutlineFont(TTF_Font* newOutlineFont)
+{
+	outlineFont = newOutlineFont;
+}
+
+void Widgets::SetShadowFont(TTF_Font* newShadowFont)
+{
+	shadowFont = newShadowFont;
 }
 
 void Widgets::SetTexture(SDL_Texture* newTexture)
 {
 	texHeart = newTexture;
-}
-
-void Widgets::AddPoint()
-{
-	score++;
 }
 
 void Widgets::EraseHeart()
@@ -107,19 +118,7 @@ void Widgets::Draw(SDL_Renderer* render)
 		}
 	}
 
-	SDL_Surface* surf;
-	SDL_Texture* tex;
-	SDL_Rect rect;
 	std::string s = std::to_string(score);
-	std::string scor = scoreText + s;
-	const char* st = scor.c_str();
-	surf = TTF_RenderText_Solid(font, st, fontColor);
-	tex = SDL_CreateTextureFromSurface(render, surf);
-	rect.x = WIDTH - 25 - surf->w;
-	rect.y = 22;
-	rect.w = surf->w;
-	rect.h = surf->h;
-	SDL_RenderCopy(render, tex, NULL, &rect);
-	SDL_FreeSurface(surf);
-	SDL_DestroyTexture(tex);
+	std::string newScoreText = scoreText + s;
+	text->Draw(render, font, outlineFont, shadowFont, fontColor, fontOutlineColor, newScoreText, WIDTH - 25, 22);
 }

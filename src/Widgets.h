@@ -2,6 +2,7 @@
 #include <vector>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include "Text.h"
 
 class Widgets
 {
@@ -12,9 +13,12 @@ private:
 	SDL_Rect srcEmptyHeart;
 	SDL_Texture* texHeart;
 	TTF_Font* font;
+	TTF_Font* shadowFont;
+	TTF_Font* outlineFont;
 	SDL_Color fontColor;
+	SDL_Color fontOutlineColor;
 	const char* scoreText;
-	int score = 0;
+	Text* text;
 	
 public:
 	Widgets();
@@ -22,9 +26,10 @@ public:
 
 	void Init();
 
-	void SetFont(TTF_Font* newfont);
+	void SetFont(TTF_Font* newFont);
+	void SetOutlineFont(TTF_Font* newOutlineFont);
+	void SetShadowFont(TTF_Font* newShadowFont);
 	void SetTexture(SDL_Texture* newTexture);
-	void AddPoint();
 	void EraseHeart();
 
 	int GetNumberOfFullHearts();
