@@ -24,6 +24,7 @@ constexpr const char* SHADOW_FONT = "shadow_font";
 constexpr const char* FONT = "font";
 constexpr const char* FONT_PATH = "res/SharpAxe.ttf";
 
+constexpr const char* ICON_IMAGE_PATH = "res/ghost.png";
 constexpr const char* TILESETS_IMAGE = "tilesets";
 constexpr const char* TILESETS_IMAGE_PATH = "res/moleFrogTilesets.png";
 constexpr const char* MOLE_IMAGE = "mole";

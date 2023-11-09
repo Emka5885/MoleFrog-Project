@@ -4,7 +4,7 @@
 #include <SDL_image.h>
 #include <cassert>
 
-//struct SDL_Window* GetWindow();
+SDL_Window* GetWindow();
 //struct SDL_Renderer* GetRenderer();
 
 void RenderInit(); 

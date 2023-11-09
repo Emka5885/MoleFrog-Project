@@ -41,6 +41,9 @@ void Game::Init()
 	RenderInit();
 
 	SDL_ShowCursor(false);
+	SDL_Surface* surf = IMG_Load(ICON_IMAGE_PATH);
+	SDL_SetWindowIcon(GetWindow(), surf);
+
 
 	assets = new AssetManager();
 	widgets = new Widgets();
